@@ -22,7 +22,7 @@ type Organizer = {
   name: string;
 };
 
-export function CreateEventPageComponent() {
+export function CreateFeature() {
   const [eventDetails, setEventDetails] = useState({
     title: '',
     startDate: new Date(),

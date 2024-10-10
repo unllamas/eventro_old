@@ -9,7 +9,7 @@ import { Calendar, Clock, MapPin, Users, Search } from 'lucide-react';
 import Link from 'next/link';
 
 // Mock data for Nostr events
-const mockEvents = [
+const MOCK_EVENTS = [
   {
     id: 'event1',
     pubkey: 'npub1abc...',
@@ -47,11 +47,11 @@ const mockEvents = [
   // Add more mock events as needed
 ];
 
-export function HomePageComponent() {
+export function HomeFeature() {
   const [searchTerm, setSearchTerm] = useState('');
   const [filterType, setFilterType] = useState('all');
 
-  const filteredEvents = mockEvents.filter((event) => {
+  const filteredEvents = MOCK_EVENTS.filter((event) => {
     const matchesSearch =
       event.tags
         .find((tag) => tag[0] === 'd')?.[1]

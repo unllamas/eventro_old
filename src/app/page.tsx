@@ -1,10 +1,10 @@
-import { HomePageComponent } from '@/components/home-page';
-import Image from 'next/image';
+// import { HomeFeature } from '@/feature/home';
 
 export default function Home() {
   return (
     <>
-      <HomePageComponent />
+      <h1>Home</h1>
+      {/* <HomeFeature /> */}
     </>
   );
 }

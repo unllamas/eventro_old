@@ -1,9 +1,10 @@
-import { EventPageComponent } from '@/components/event-page';
+// import { EventFeature } from '@/feature/event';
 
-export default function Page() {
+export default function Event() {
   return (
     <>
-      <EventPageComponent />
+      <h1>Event</h1>
+      {/* <EventFeature /> */}
     </>
   );
 }

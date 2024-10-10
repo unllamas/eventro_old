@@ -1,9 +1,10 @@
-import { CreateEventPageComponent } from '@/components/create-event-page';
+// import { CreateFeature } from '@/feature/create';
 
-export default function Page() {
+export default function Create() {
   return (
     <>
-      <CreateEventPageComponent />
+      <h1>Create</h1>
+      {/* <CreateFeature /> */}
     </>
   );
 }
