@@ -34,3 +34,33 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+
+``` js
+{
+  kind: 30023,
+  pubkey: 'npubexample', // This should be the actual organizer's public key
+  created_at: Math.floor(Date.now() / 1000),
+  tags: [
+    // Metadata
+    ['d', uuidv4()],
+    ['title', '<title of event>'],
+    ['image', '<image>', '256x256'],
+
+    // Dates
+    ['start', '<unix timestamp in seconds>'],
+    ['end', '<unix timestamp in seconds>'],
+
+    // Location
+    ['location', `<location description>`],
+    ['g', '<geohash>'],
+
+    // Tickets
+    ['ticket', '<title>', '<description>', '<amount>', '<token>', '<quantity>'],
+
+    // Relays
+    ['relays', '<relay-url>', ...],
+  ],
+  content: '<eventDetails.description>',
+}
+```
