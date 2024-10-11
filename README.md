@@ -81,20 +81,20 @@ Eventro utiliza tipos de eventos especÃ­ficos de Nostr para gestionar la creaciÃ
 ```js
 {
   "kind": 30601,
-  "pubkey": "<npub-buyer>",
+  "pubkey": "<npub-user>",
   "content": "Tickets purchased.",
   "tags": [
       // Metadata
       ["d", "<UUID>"],
-      ["a", "<kind>:<npub-owner>:<UUID>"]
+      ["a", "<kind>:<npub-user>:<UUID>"]
       ["e", "<note principal id>"],
 
       // Payment
       ["bolt11", "<invoice>"],
 
       // Publishers
-      ["p", "<npub-seller>"],
-      ["p", "<npub-seller>"],
+      ["p", "<npub-mod/owner>"],
+      ["p", "<npub-mod/owner>"],
 
       // Tickets
       ["ticket", "<title>", "<quantity>"],
@@ -114,16 +114,16 @@ Eventro utiliza tipos de eventos especÃ­ficos de Nostr para gestionar la creaciÃ
 ```js
 {
   "kind": 30602,
-  "pubkey": "<npub-seller>",
+  "pubkey": "<npub-mod/owner>",
   "content": "Check-in.",
   "tags": [
       // Metadata
       ["d", "<UUID>"],
-      ["a", "<kind>:<npub-owner>:<UUID>"]
+      ["a", "<kind>:<npub-mod/owner>:<UUID>"]
       ["e", "<purchased principal id>"],
 
-      // Buyer
-      ["p", "<npub-buyer>"],
+      // User
+      ["p", "<npub-user>"],
 
       // Ticket
       ["check-in", "<title>", "<quantity>"],
