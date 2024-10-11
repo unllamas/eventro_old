@@ -1,66 +1,99 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Eventro 🎟️
 
-## Getting Started
+Eventro es una plataforma para la búsqueda y gestión de eventos.
 
-First, run the development server:
+## Cómo Funciona ⚙️
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+Eventro facilita la creación y publicación de eventos directamente en la red Nostr. Cada evento se representa como un mensaje Nostr que contiene todos los detalles relevantes.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Estructura de un Eventro en Nostr 📄
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Cada evento se define usando el [NIP-23 Long-form Content](https://github.com/nostr-protocol/nips/blob/master/23.md) y contiene una serie de campos organizados en tags y contenido:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
-
-
-``` js
+```js
 {
-  kind: 30023,
-  pubkey: 'npubexample', // This should be the actual organizer's public key
-  created_at: Math.floor(Date.now() / 1000),
-  tags: [
+  "kind": 30023,
+  "pubkey": "<npub1>",
+  "content": "<content from event on string>",
+  "tags": [
     // Metadata
-    ['d', uuidv4()],
-    ['title', '<title of event>'],
-    ['image', '<image>', '256x256'],
+    ["d", "<unique-event-identifier-123>"],
+    ["title", "<title of event>"],
+    ["image", "<image url>", "256x256"],
 
     // Dates
-    ['start', '<unix timestamp in seconds>'],
-    ['end', '<unix timestamp in seconds>'],
+    ["start", "<unix timestamp in seconds>"],
+    ["end", "<unix timestamp in seconds>"],
 
     // Location
-    ['location', `<location description>`],
-    ['g', '<geohash>'],
+    ["location", `<location description>`],
+    ["g", "<geohash>"],
+
+    // Publishers
+    ["p", "<npub1>", "owner"],
+    ["p", "<npub2>", "mod"],
+
+    // Tags
+    ["t", "<tag name>"],
 
     // Tickets
-    ['ticket', '<title>', '<description>', '<amount>', '<token>', '<quantity>'],
+    ["ticket", "<title>", "<description>", "<amount>", "<token>", "<quantity>"],
 
     // Relays
-    ['relays', '<relay-url>', ...],
-  ],
-  content: '<eventDetails.description>',
+    ["relays", "<relay-url>", ...]
+  ]
 }
 ```
+
+## Guía de Instalación 🛠️
+
+### Requisitos Previos
+
+- Node.js (v18 o superior)
+
+### Pasos de Instalación
+
+1. Clona el repositorio:
+   ```bash
+   git clone https://github.com/unllamas/eventro.git
+   cd eventro
+   ```
+
+2. Instala las dependencias:
+   ```bash
+   npm install
+   ```
+
+3. Inicia la aplicación:
+   ```bash
+   npm run dev
+   ```
+
+## Contribuir 🤝
+
+¡Nos encantaría contar con tu ayuda para mejorar Eventro! Sigue estos pasos para contribuir:
+
+1. Realiza un fork del repositorio.
+2. Crea una rama con tus cambios:
+   ```bash
+   git checkout -b feature/mi-nueva-funcionalidad
+   ```
+3. Realiza tus cambios y commitea:
+   ```bash
+   git commit -am 'Añade una nueva funcionalidad'
+   ```
+4. Sube tus cambios a tu fork:
+   ```bash
+   git push origin feature/mi-nueva-funcionalidad
+   ```
+5. Crea un Pull Request detallando tus mejoras.
+
+## Licencia 📄
+
+Este proyecto está licenciado bajo la Licencia MIT. Consulta el archivo [LICENSE](LICENSE) para más detalles.
+
+---
+
+¿Tienes preguntas o sugerencias? ¡Únete a nuestra comunidad en [Discord](https://discord.gg/QESv76truh)!
+
+Construido con ❤️ por la comunidad [Nostr Argentina](https://github.com/nostr-arg).
