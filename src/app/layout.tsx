@@ -3,7 +3,7 @@ import dynamic from 'next/dynamic';
 
 import '@/style/globals.css';
 
-const NostrContext = dynamic(() => import('@/context/nostr').then((mod) => mod.NostrContext), {
+const NostrContext = dynamic(() => import('@/context/Nostr').then((mod) => mod.NostrContext), {
   loading: () => (
     <div className='flex justify-center items-center w-full h-full'>
       <p className='font-bold'>Loading...</p>
