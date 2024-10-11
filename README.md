@@ -2,11 +2,31 @@
 
 Eventro es una plataforma para la búsqueda y gestión de eventos.
 
-## Cómo Funciona ⚙️
+## Guía de Instalación 🛠️
 
-Eventro facilita la creación y publicación de eventos directamente en la red Nostr. Cada evento se representa como un mensaje Nostr que contiene todos los detalles relevantes.
+### Requisitos Previos
 
-### Estructura de un Eventro en Nostr 📄
+- Node.js (v18 o superior)
+
+### Pasos de Instalación
+
+1. Clona el repositorio:
+   ```bash
+   git clone https://github.com/unllamas/eventro.git
+   cd eventro
+   ```
+
+2. Instala las dependencias:
+   ```bash
+   npm install
+   ```
+
+3. Inicia la aplicación:
+   ```bash
+   npm run dev
+   ```
+
+### Evento en Nostr 📄
 
 Cada evento se define usando el [NIP-23 Long-form Content](https://github.com/nostr-protocol/nips/blob/master/23.md) y contiene una serie de campos organizados en tags y contenido:
 
@@ -44,30 +64,6 @@ Cada evento se define usando el [NIP-23 Long-form Content](https://github.com/no
   ]
 }
 ```
-
-## Guía de Instalación 🛠️
-
-### Requisitos Previos
-
-- Node.js (v18 o superior)
-
-### Pasos de Instalación
-
-1. Clona el repositorio:
-   ```bash
-   git clone https://github.com/unllamas/eventro.git
-   cd eventro
-   ```
-
-2. Instala las dependencias:
-   ```bash
-   npm install
-   ```
-
-3. Inicia la aplicación:
-   ```bash
-   npm run dev
-   ```
 
 ## Contribuir 🤝
 

@@ -282,7 +282,7 @@ export function EventFeature(props: { id: string }) {
             <div className='flex flex-col gap-2'>
               <div className='flex flex-col gap-2'>
                 <Label htmlFor='email'>Email (optional)</Label>
-                <Input id='email' type='email' placeholder='Your email' />
+                <Input id='email' type='email' placeholder='Your email' disabled />
               </div>
             </div>
 
@@ -296,7 +296,7 @@ export function EventFeature(props: { id: string }) {
               </div>
             </div>
 
-            <Button className='w-full mt-4' size='lg'>
+            <Button className='w-full mt-4' size='lg' disabled>
               Confirm Registration
             </Button>
           </div>

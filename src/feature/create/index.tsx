@@ -187,7 +187,6 @@ export function CreateFeature() {
           <div className='flex flex-col w-full md:max-w-[320px] h-full gap-8'>
             <ImageUploader imageUrl={imageUrl} onImageUpload={handleImageUpload} />
             <OrganizersList
-              organizers={eventDetails.organizers}
               newOrganizer={newOrganizer}
               onNewOrganizerChange={setNewOrganizer}
               onAddOrganizer={addOrganizer}
