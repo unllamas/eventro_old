@@ -1,11 +1,13 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { v4 as uuidv4 } from 'uuid';
 import { format } from 'date-fns';
 import Geohash from 'latlon-geohash';
 import { MapPin, Plus, ArrowUp, ArrowDown, Trash2, Search, X } from 'lucide-react';
 import { nip19 } from 'nostr-tools';
+import { useNewEvent, useLogin, useActiveUser } from 'nostr-hooks';
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -16,11 +18,33 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { Calendar } from '@/components/ui/calendar';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { RELAYS } from '@/lib/nostr';
 
 type Organizer = {
   pubkey: string;
   name: string;
 };
+
+type Tickets = { title: string; description: string; amount: number; token: string; quantity: number };
+
+interface Event {
+  title: string;
+  startDate: string;
+  startTime: string;
+  endDate: string;
+  endTime: string;
+  location: {
+    description: string;
+    lat: 0;
+    lon: 0;
+  };
+  description: string;
+  image: File | null;
+  tickets: Tickets[];
+  relays: string[];
+  tags: string[];
+  organizers: Organizer[];
+}
 
 export function CreateFeature() {
   const [eventDetails, setEventDetails] = useState({
@@ -37,12 +61,18 @@ export function CreateFeature() {
     description: '',
     image: null as File | null,
     tickets: [] as { title: string; description: string; amount: number; token: string; quantity: number }[],
-    relays: ['wss://relay1.example.com', 'wss://relay2.example.com'],
+    relays: RELAYS,
     tags: [] as string[],
-    organizers: [{ pubkey: 'default_pubkey_hex', name: 'Default Organizer' }] as Organizer[],
+    organizers: [{ pubkey: '', name: 'Owner' }] as Organizer[],
   });
 
   const [newOrganizer, setNewOrganizer] = useState('');
+
+  // Libs and hooks
+  const router = useRouter();
+
+  const { createNewEvent } = useNewEvent();
+  const { activeUser } = useActiveUser();
 
   const handleEventChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -125,6 +155,8 @@ export function CreateFeature() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
+    const event = createNewEvent();
+
     const createUnixTimestamp = (date: Date, timeString: string): number => {
       if (!timeString) return Math.floor(date.getTime() / 1000);
       const [hours, minutes] = timeString.split(':').map(Number);
@@ -136,53 +168,71 @@ export function CreateFeature() {
     const startTimestamp = createUnixTimestamp(eventDetails.startDate, eventDetails.startTime);
     const endTimestamp = createUnixTimestamp(eventDetails.endDate, eventDetails.endTime);
 
-    const nostrEvent = {
-      kind: 30023,
-      pubkey: eventDetails.organizers[0].pubkey, // Use the first organizer as the main pubkey
-      created_at: Math.floor(Date.now() / 1000),
-      tags: [
-        ['d', uuidv4()],
-        ['title', eventDetails.title],
-        ['image', eventDetails.image ? URL.createObjectURL(eventDetails.image) : '', '256x256'],
-        ['start', startTimestamp.toString()],
-        ['end', endTimestamp.toString()],
-        ['location', eventDetails.location.description],
-        ['g', Geohash.encode(eventDetails.location.lat, eventDetails.location.lon)],
-        ...eventDetails.tickets.map((ticket) => [
-          'ticket',
-          ticket.title,
-          ticket.description,
-          ticket.amount.toString(),
-          ticket.token,
-          ticket.quantity.toString(),
-        ]),
-        ...eventDetails.tags.map((tag) => ['t', tag]),
-        ...eventDetails.organizers.map((organizer) => ['p', organizer.pubkey]),
-        ['relays', ...eventDetails.relays],
-      ],
-      content: eventDetails.description,
-    };
+    // const nostrEvent = {
+    //   kind: 30023,
+    //   pubkey: eventDetails.organizers[0].pubkey, // Use the first organizer as the main pubkey
+    //   created_at: Math.floor(Date.now() / 1000),
+    //   tags: [
+    //     ['d', uuidv4()],
+    //     ['title', eventDetails.title],
+    //     ['image', eventDetails.image ? URL.createObjectURL(eventDetails.image) : '', '256x256'],
+    //     ['start', startTimestamp.toString()],
+    //     ['end', endTimestamp.toString()],
+    //     ['location', eventDetails.location.description],
+    //     ['g', Geohash.encode(eventDetails.location.lat, eventDetails.location.lon)],
+    //     ...eventDetails.tickets.map((ticket) => [
+    //       'ticket',
+    //       ticket.title,
+    //       ticket.description,
+    //       ticket.amount.toString(),
+    //       ticket.token,
+    //       ticket.quantity.toString(),
+    //     ]),
+    //     ...eventDetails.tags.map((tag) => ['t', tag]),
+    //     ...eventDetails.organizers.map((organizer) => ['p', organizer.pubkey]),
+    //     ['relays', ...eventDetails.relays],
+    //   ],
+    //   content: eventDetails.description,
+    // };
 
-    console.log('Nostr Event to be published:', nostrEvent);
-    // In a real application, you would sign and publish the event here
+    const UUID = uuidv4();
+
+    event.content = eventDetails.description;
+    event.kind = 30023;
+    event.tags = [
+      ['d', UUID],
+      ['title', eventDetails.title],
+      ['image', eventDetails.image ? URL.createObjectURL(eventDetails.image) : '', '256x256'],
+      ['start', startTimestamp.toString()],
+      ['end', endTimestamp.toString()],
+      ['location', eventDetails.location.description],
+      ['g', Geohash.encode(eventDetails.location.lat, eventDetails.location.lon)],
+      ...eventDetails.tickets.map((ticket) => [
+        'ticket',
+        ticket.title,
+        ticket.description,
+        ticket.token,
+        ticket.amount.toString(),
+        ticket.quantity.toString(),
+      ]),
+      ...eventDetails.tags.map((tag) => ['t', tag]),
+      ...eventDetails.organizers.map((organizer) => organizer && ['p', activeUser?.pubkey as string]),
+      ['relays', ...eventDetails.relays],
+    ];
+
+    event
+      .publish()
+      .then((e) => {
+        console.log('e', e);
+        router.push(`/event/${UUID}`);
+      })
+      .catch((err) => {
+        console.log('err', err);
+      });
   };
 
   return (
     <div className='min-h-screen bg-background'>
-      <header className='border-b'>
-        <div className='container mx-auto px-4 py-4 flex items-center justify-between'>
-          <h1 className='text-2xl font-bold text-primary'>NostrEvents</h1>
-          <nav className='hidden md:flex space-x-4'>
-            <a href='/' className='text-muted-foreground hover:text-primary'>
-              Home
-            </a>
-            <a href='/create' className='text-muted-foreground hover:text-primary'>
-              Create
-            </a>
-          </nav>
-        </div>
-      </header>
-
       <main className='flex flex-col md:flex-row gap-8 w-full max-w-[960px] mx-auto px-4 py-8'>
         <form onSubmit={handleSubmit} className='flex flex-col md:flex-row gap-8 w-full'>
           <div className='flex flex-col w-full md:max-w-[320px] h-full gap-8'>
@@ -409,7 +459,7 @@ export function CreateFeature() {
                       ))}
                     </div>
                   )}
-                  <Button variant='secondary' onClick={addTicket} className='w-full mt-4'>
+                  <Button type='button' variant='secondary' onClick={addTicket} className='w-full mt-4'>
                     Add Ticket
                   </Button>
                 </CardContent>
