@@ -33,7 +33,7 @@ Eventro es una plataforma para la búsqueda y gestión de eventos.
 Eventro utiliza tipos de eventos específicos de Nostr para gestionar la creación de eventos y la emisión de tickets:
 
 - **Evento Principal (`kind: 10600`)**: Nota reemplazable que representa la creación y modificación de un evento. Los eventos pueden ser actualizados para asegurar que los asistentes tengan la información más reciente.
-- **Tickets (`kind: 30601`)**: Nota regular que gestiona la propiedad y la transferencia de tickets. Esto garantiza que los tickets puedan ser revendidos o transferidos entre usuarios mientras se mantiene la información actualizada.
+- **Ticket (`kind: 30601`)**: Nota regular que gestiona la propiedad y la transferencia de tickets. Esto garantiza que los tickets puedan ser revendidos o transferidos entre usuarios mientras se mantiene la información actualizada.
 - **Check-in (`kind: 20602`)**: Nota efímera que maneja la validación de tickets al ingresar a un evento. Una vez que un ticket se utiliza para el check-in, se marca como consumido y no puede volver a usarse.
 
 ### Evento 
@@ -76,7 +76,7 @@ Eventro utiliza tipos de eventos específicos de Nostr para gestionar la creaci�
 }
 ```
 
-### Tickets
+### Ticket
 
 ```js
 {
@@ -90,10 +90,6 @@ Eventro utiliza tipos de eventos específicos de Nostr para gestionar la creaci�
 
       // Payment
       ["bolt11", "<invoice>"],
-
-      // Publishers
-      ["p", "<npub-mod/owner>"],
-      ["p", "<npub-mod/owner>"],
 
       // Tickets
       ["ticket", "<title>", "<quantity>"],
@@ -118,7 +114,7 @@ Eventro utiliza tipos de eventos específicos de Nostr para gestionar la creaci�
   "tags": [
       // Metadata
       ["a", "<kind>:<npub-mod/owner>:<d tag value>"]
-      ["e", "<32-bytes lowercase hex of the id of principal event>"],
+      ["e", "<32-bytes lowercase hex of the id of ticket event>"],
 
       // User
       ["p", "<npub-user>"],
