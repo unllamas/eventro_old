@@ -12,7 +12,6 @@ import { uploadFile } from '@/lib/file-upload';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Footer } from '@/components/layout/footer';
 
 import { ImageUploader } from './components/image-uploader';
 import { EventDateTimePicker } from './components/event-date-time-picker';
@@ -232,7 +231,6 @@ export function CreateFeature() {
           </div>
         </form>
       </main>
-      <Footer />
     </div>
   );
 }

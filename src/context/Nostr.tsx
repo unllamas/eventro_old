@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useNostrHooks, useAutoLogin, useActiveUser, useLogin } from 'nostr-hooks';
 
 import { ndk } from '@/lib/nostr';
+import { Footer } from '@/components/layout/footer';
 
 export const NostrContext = ({ children }: any) => {
   useNostrHooks(ndk);
@@ -33,6 +34,7 @@ export const NostrContext = ({ children }: any) => {
         </div>
       </header>
       {children}
+      <Footer />
     </div>
   );
 };
