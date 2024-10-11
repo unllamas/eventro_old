@@ -67,8 +67,8 @@ Eventro utiliza tipos de eventos espec√≠ficos de Nostr para gestionar la creaci√
     ["t", "<tag name>"],
 
     // Tickets
-    ["ticket", "<title>", "<description>", "<token>", "<amount>", "<quantity>"],
-    ["ticket", "<title>", "<description>", "<token>", "<amount>", "<quantity>"],
+    ["ticket", "<title>", "<description>", "<amount>", "sat/<token>", "<quantity>"],
+    ["ticket", "<title>", "<description>", "<amount>", "sat/<token>", "<quantity>"],
 
     // Relays
     ["relays", "<relay-url>", ...]
@@ -85,8 +85,7 @@ Eventro utiliza tipos de eventos espec√≠ficos de Nostr para gestionar la creaci√
   "content": "Tickets purchased.",
   "tags": [
       // Metadata
-      ["d", "<UUID>"],
-      ["a", "<kind>:<npub-user>:<UUID>"]
+      ["a", "<kind>:<npub-user>:<note principal id>"]
       ["e", "<note principal id>"],
 
       // Payment
@@ -118,8 +117,7 @@ Eventro utiliza tipos de eventos espec√≠ficos de Nostr para gestionar la creaci√
   "content": "Check-in.",
   "tags": [
       // Metadata
-      ["d", "<UUID>"],
-      ["a", "<kind>:<npub-mod/owner>:<UUID>"]
+      ["a", "<kind>:<npub-mod/owner>:<purchased principal id>"]
       ["e", "<purchased principal id>"],
 
       // User
