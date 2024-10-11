@@ -85,8 +85,8 @@ Eventro utiliza tipos de eventos espec√≠ficos de Nostr para gestionar la creaci√
   "content": "Tickets purchased.",
   "tags": [
       // Metadata
-      ["a", "<kind>:<npub-user>:<note principal id>"]
-      ["e", "<note principal id>"],
+      ["a", "<kind>:<npub-user>:<d tag value>"]
+      ["e", "<32-bytes lowercase hex of the id of principal event>"],
 
       // Payment
       ["bolt11", "<invoice>"],
@@ -117,8 +117,8 @@ Eventro utiliza tipos de eventos espec√≠ficos de Nostr para gestionar la creaci√
   "content": "Check-in.",
   "tags": [
       // Metadata
-      ["a", "<kind>:<npub-mod/owner>:<purchased principal id>"]
-      ["e", "<purchased principal id>"],
+      ["a", "<kind>:<npub-mod/owner>:<d tag value>"]
+      ["e", "<32-bytes lowercase hex of the id of principal event>"],
 
       // User
       ["p", "<npub-user>"],
