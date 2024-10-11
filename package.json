@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@nostr-dev-kit/ndk": "^2.10.1",
     "@radix-ui/react-avatar": "^1.1.1",
     "@radix-ui/react-checkbox": "^1.1.2",
     "@radix-ui/react-dialog": "^1.1.2",
@@ -24,6 +25,7 @@
     "latlon-geohash": "^2.0.0",
     "lucide-react": "^0.451.0",
     "next": "14.2.15",
+    "nostr-hooks": "^2.9.11",
     "nostr-tools": "^2.7.2",
     "react": "^18",
     "react-day-picker": "^8.10.1",
