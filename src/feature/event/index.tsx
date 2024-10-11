@@ -228,7 +228,7 @@ export function EventFeature(props: { id: string }) {
                 </div>
                 <div className='mt-4'>
                   <Button className='w-full' size='lg' onClick={handleRegister} disabled={totalPrice === 0}>
-                    Register
+                    Get entry
                   </Button>
                 </div>
               </CardContent>
