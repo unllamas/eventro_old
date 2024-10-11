@@ -34,7 +34,7 @@ Eventro utiliza tipos de eventos específicos de Nostr para gestionar la creaci�
 
 - **Evento Principal (`kind: 10600`)**: Nota reemplazable que representa la creación y modificación de un evento. Los eventos pueden ser actualizados para asegurar que los asistentes tengan la información más reciente.
 - **Tickets (`kind: 30601`)**: Nota regular que gestiona la propiedad y la transferencia de tickets. Esto garantiza que los tickets puedan ser revendidos o transferidos entre usuarios mientras se mantiene la información actualizada.
-- **Check-in (`kind: 30602`)**: Nota efímera que maneja la validación de tickets al ingresar a un evento. Una vez que un ticket se utiliza para el check-in, se marca como consumido y no puede volver a usarse.
+- **Check-in (`kind: 20602`)**: Nota efímera que maneja la validación de tickets al ingresar a un evento. Una vez que un ticket se utiliza para el check-in, se marca como consumido y no puede volver a usarse.
 
 ### Evento 
 
@@ -76,7 +76,7 @@ Eventro utiliza tipos de eventos específicos de Nostr para gestionar la creaci�
 }
 ```
 
-### Adquirir ticket
+### Tickets
 
 ```js
 {
@@ -112,7 +112,7 @@ Eventro utiliza tipos de eventos específicos de Nostr para gestionar la creaci�
 
 ```js
 {
-  "kind": 30602,
+  "kind": 20602,
   "pubkey": "<npub-mod/owner>",
   "content": "Check-in.",
   "tags": [
