@@ -143,6 +143,9 @@ export function CreateFeature() {
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
+    // TO-DO
+    return null;
+
     e.preventDefault();
     const event = createNewEvent();
     const startTimestamp = createUnixTimestamp(eventDetails.startDate, eventDetails.startTime);
@@ -223,7 +226,7 @@ export function CreateFeature() {
               />
               <EventDescription description={eventDetails.description} onChange={handleEventChange} />
               <TagsInput tags={eventDetails.tags.join(', ')} onChange={handleTagsChange} />
-              <Button type='submit' className='w-full' size='lg'>
+              <Button type='submit' className='w-full' size='lg' disabled>
                 Create Event
               </Button>
             </div>
