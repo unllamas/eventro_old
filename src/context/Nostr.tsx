@@ -16,7 +16,7 @@ export const NostrContext = ({ children }: any) => {
     <div>
       <header className='border-b'>
         <div className='container mx-auto px-4 py-4 flex items-center justify-between'>
-          <h1 className='text-2xl font-bold text-primary'>NostrEvents</h1>
+          <h1 className='text-2xl font-bold text-primary'>Eventro</h1>
           <nav className='hidden md:flex space-x-4'>
             <Link href='/' className='text-muted-foreground hover:text-primary'>
               Home
@@ -28,11 +28,7 @@ export const NostrContext = ({ children }: any) => {
               Create
             </Link>
 
-            {activeUser ? (
-              <p>Bienvenido</p>
-            ) : (
-              <button onClick={() => loginWithExtension()}>Login with Extension</button>
-            )}
+            {activeUser ? <p>Bienvenido</p> : <button onClick={() => loginWithExtension()}>Login</button>}
           </nav>
         </div>
       </header>

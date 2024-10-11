@@ -1,7 +1,16 @@
 import type { Metadata } from 'next';
+import dynamic from 'next/dynamic';
 
 import '@/style/globals.css';
-import { NostrContext } from '@/context/Nostr';
+
+const NostrContext = dynamic(() => import('@/context/nostr').then((mod) => mod.NostrContext), {
+  loading: () => (
+    <div className='flex justify-center items-center w-full h-full'>
+      <p className='font-bold'>Loading...</p>
+    </div>
+  ),
+  ssr: false,
+});
 
 export const metadata: Metadata = {
   title: 'Create Next App',

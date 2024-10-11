@@ -143,7 +143,7 @@ export function EventFeature(props: { id: string }) {
           <div className='flex flex-col gap-8'>
             <div className='flex items-end'>
               <div className='flex flex-col gap-4'>
-                <h1 className='text-5xl font-bold text-white mb-2'>{eventDetails.title}</h1>
+                <h1 className='text-4xl md:text-5xl font-bold text-white mb-2'>{eventDetails.title}</h1>
                 <div className='flex flex-col gap-2 text-white'>
                   <div className='flex items-center gap-2'>
                     <div className='flex justify-center items-center w-12 h-12 border rounded-xl'>
