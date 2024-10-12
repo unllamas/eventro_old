@@ -1,10 +1,12 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import Image from 'next/image';
-import { useSubscribe } from 'nostr-hooks';
 import { format, parse, isValid } from 'date-fns';
-import { Calendar, MapPin, Minus, Plus, Share2, Users, Zap } from 'lucide-react';
+import { Calendar, MapPin, Minus, Plus } from 'lucide-react';
+import useSWR from 'swr';
+
+import fetcher from '@/lib/fetcher';
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -22,42 +24,9 @@ export function EventFeature(props: { id: string }) {
     Array<{ id: string; title: string; count: number; price: number; token: string }>
   >([]);
 
-  const filters = useMemo(
-    () => [
-      { authors: ['626848be46f51b9abbd52e2f10ebb2b6516216704e6677c5561ab5db2367598c'], '#d': [id], kinds: [30023] },
-    ],
-    [],
-  );
-  const { events } = useSubscribe({ filters });
+  const { data: event, isLoading } = useSWR(`/api/event?id=${id}`, fetcher);
 
-  const nostrEvent = events?.length > 0 && events[0];
-
-  if (!nostrEvent) return null;
-
-  // Hardcode data
-  const eventDetails = {
-    id: nostrEvent?.tags.find((tag) => tag[0] === 'd')?.[1],
-    title: nostrEvent?.tags.find((tag) => tag[0] === 'title')?.[1] || 'Untitled Event',
-    date: new Date(nostrEvent?.created_at! * 1000).toLocaleDateString(),
-    time: new Date(nostrEvent?.created_at! * 1000).toLocaleTimeString(),
-    start: nostrEvent?.tags.find((tag) => tag[0] === 'start')?.[1],
-    end: nostrEvent?.tags.find((tag) => tag[0] === 'end')?.[1],
-    location: nostrEvent?.tags.find((tag) => tag[0] === 'location')?.[1],
-    description: nostrEvent?.content,
-    image: nostrEvent?.tags.find((tag) => tag[0] === 'image')?.[1],
-    organizers: [],
-    tickets:
-      nostrEvent?.tags
-        .filter((tag) => tag[0] === 'ticket')!
-        .map((ticket) => ({
-          id: ticket[0] + '_' + ticket[1].toLowerCase(),
-          title: ticket[1],
-          description: ticket[2],
-          token: ticket[3],
-          price: parseInt(ticket[4]),
-          available: parseInt(ticket[5]),
-        })) || [],
-  };
+  if (!event) return null;
 
   const handleTicketChange = (ticketId: string, change: number) => {
     const updatedCounts = { ...ticketCounts };
@@ -65,7 +34,7 @@ export function EventFeature(props: { id: string }) {
     if (updatedCounts[ticketId] < 0) updatedCounts[ticketId] = 0;
     setTicketCounts(updatedCounts);
 
-    const ticket = eventDetails.tickets.find((t) => t.id === ticketId);
+    const ticket = event.tickets.find((t: any) => t.id === ticketId);
     if (ticket) {
       const updatedSelectedTickets = selectedTickets.filter((t) => t.id !== ticketId);
       if (updatedCounts[ticketId] > 0) {
@@ -111,8 +80,8 @@ export function EventFeature(props: { id: string }) {
     <div className='min-h-screen bg-background'>
       <main className='flex flex-col md:flex-row gap-8 w-full max-w-[960px] mx-auto px-4 py-8'>
         <div className='flex flex-col w-full md:max-w-[320px] gap-8'>
-          <div className='relative overflow-hidden w-full max-h-[320px] aspect-square rounded-xl bg-red-500'>
-            <Image src={eventDetails?.image as string} alt={eventDetails?.title as string} fill />
+          <div className='relative overflow-hidden w-full max-h-[320px] aspect-square rounded-xl bg-background border'>
+            <Image className='object-cover' src={event?.image as string} alt={event?.title as string} fill />
           </div>
 
           {/* <Card>
@@ -124,7 +93,7 @@ export function EventFeature(props: { id: string }) {
                 <div className='flex items-center justify-between'>
                   <div className='flex items-center'>
                     <Users className='w-5 h-5 mr-2 text-muted-foreground' />
-                    <span>{eventDetails.attendees} attendees</span>
+                    <span>{event.attendees} attendees</span>
                   </div>
                   <Button variant='outline' size='icon'>
                     <Share2 className='w-4 h-4' />
@@ -143,7 +112,7 @@ export function EventFeature(props: { id: string }) {
           <div className='flex flex-col gap-8'>
             <div className='flex items-end'>
               <div className='flex flex-col gap-4'>
-                <h1 className='text-4xl md:text-5xl font-bold text-white mb-2'>{eventDetails.title}</h1>
+                <h1 className='text-4xl md:text-5xl font-bold text-white mb-2'>{event.title}</h1>
                 <div className='flex flex-col gap-2 text-white'>
                   <div className='flex items-center gap-2'>
                     <div className='flex justify-center items-center w-12 h-12 border rounded-xl'>
@@ -151,20 +120,18 @@ export function EventFeature(props: { id: string }) {
                     </div>
                     <div className='flex flex-col'>
                       <span className='text-sm'>
-                        {new Date(Number(eventDetails?.start) * 1000).toLocaleTimeString('es-ES', {
+                        {new Date(Number(event?.start) * 1000).toLocaleTimeString('es-ES', {
                           hour: '2-digit',
                           minute: '2-digit',
                         })}{' '}
                         -
-                        {new Date(Number(eventDetails?.end) * 1000).toLocaleTimeString('es-ES', {
+                        {new Date(Number(event?.end) * 1000).toLocaleTimeString('es-ES', {
                           hour: '2-digit',
                           minute: '2-digit',
                         })}{' '}
                         hs.
                       </span>
-                      <span className='font-bold'>
-                        {new Date(Number(eventDetails?.start) * 1000).toLocaleDateString()}
-                      </span>
+                      <span className='font-bold'>{new Date(Number(event?.start) * 1000).toLocaleDateString()}</span>
                     </div>
                   </div>
                   <div className='flex items-center gap-2'>
@@ -172,7 +139,7 @@ export function EventFeature(props: { id: string }) {
                       <MapPin className='w-4 h-4' />
                     </div>
                     <div className='flex flex-col items-start'>
-                      <span className='font-bold'>{eventDetails.location}</span>
+                      <span className='font-bold'>{event.location}</span>
                     </div>
                   </div>
                 </div>
@@ -185,7 +152,7 @@ export function EventFeature(props: { id: string }) {
               </CardHeader>
               <CardContent>
                 <div className='space-y-4'>
-                  {eventDetails?.tickets?.map((ticket, index) => {
+                  {event?.tickets?.map((ticket: any, index: number) => {
                     const id = ticket.id;
 
                     return (
@@ -236,7 +203,7 @@ export function EventFeature(props: { id: string }) {
 
             <div className='flex flex-col gap-2'>
               <h2 className='text-white/70 text-sm font-bold'>About this event</h2>
-              <p className='text-lg'>{eventDetails?.description}</p>
+              <p className='text-lg'>{event?.description}</p>
             </div>
           </div>
         </div>
@@ -247,17 +214,12 @@ export function EventFeature(props: { id: string }) {
           <div className='w-full flex flex-col gap-8'>
             <div className='flex gap-4 items-center'>
               <div className='relative overflow-hidden w-full max-w-[80px] max-h-[80px] aspect-square rounded-xl bg-red-500'>
-                <Image
-                  src={eventDetails?.image as string}
-                  alt={eventDetails?.title as string}
-                  layout='fill'
-                  objectFit='cover'
-                />
+                <Image src={event?.image as string} alt={event?.title as string} layout='fill' objectFit='cover' />
               </div>
               <div>
                 <h3 className='text-white/70 text-sm font-bold'>Your Registration</h3>
                 <p className='text-lg'>
-                  <strong>{eventDetails?.title}</strong>
+                  <strong>{event?.title}</strong>
                 </p>
               </div>
             </div>
