@@ -48,11 +48,13 @@ export function HomeFeature() {
         <div className='flex flex-col gap-8'>
           {events?.length > 0 &&
             events?.map((event: any) => {
-              const id = event.tags.find((tag: any) => tag[0] === 'd')?.[1];
-              const title = event.tags.find((tag: any) => tag[0] === 'title')?.[1] || 'Untitled Event';
-              const start = event.tags.find((tag: any) => tag[0] === 'start')?.[1];
-              const location = event.tags.find((tag: any) => tag[0] === 'location')?.[1] || 'TBA';
-              const image = event.tags.find((tag: any) => tag[0] === 'image')?.[1];
+              if (!event) return null;
+
+              const id = event?.tags.find((tag: any) => tag[0] === 'd')?.[1];
+              const title = event?.tags.find((tag: any) => tag[0] === 'title')?.[1] || 'Untitled Event';
+              const start = event?.tags.find((tag: any) => tag[0] === 'start')?.[1];
+              const location = event?.tags.find((tag: any) => tag[0] === 'location')?.[1] || 'TBA';
+              const image = event?.tags.find((tag: any) => tag[0] === 'image')?.[1];
 
               return (
                 <Link key={id} href={`/event/${event?.id}`}>
