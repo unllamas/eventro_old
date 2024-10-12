@@ -32,46 +32,48 @@ Eventro es una plataforma para la búsqueda y gestión de eventos.
 
 Eventro utiliza tipos de eventos específicos de Nostr para gestionar la creación de eventos y la emisión de tickets:
 
-- **Evento Principal (`kind: 10600`)**: Nota reemplazable que representa la creación y modificación de un evento. Los eventos pueden ser actualizados para asegurar que los asistentes tengan la información más reciente.
-- **Ticket (`kind: 30601`)**: Nota regular que gestiona la propiedad y la transferencia de tickets. Esto garantiza que los tickets puedan ser revendidos o transferidos entre usuarios mientras se mantiene la información actualizada.
-- **Check-in (`kind: 30602`)**: Nota regular que maneja la validación de tickets al ingresar a un evento. Una vez que un ticket se utiliza para el check-in, se marca como consumido y no puede volver a usarse.
+- **Evento Principal ([NIP-52 Calendar Events](https://github.com/nostr-protocol/nips/blob/master/52.md))**: Nota reemplazable que representa la creación y modificación de un evento. Los eventos pueden ser actualizados para asegurar que los asistentes tengan la información más reciente.
+- **Ticket (`kind: 30921`)**: Nota regular que gestiona la propiedad y la transferencia de tickets. Esto garantiza que los tickets puedan ser revendidos o transferidos entre usuarios mientras se mantiene la información actualizada.
+- **Check-in (`kind: 30922`)**: Nota regular que maneja la validación de tickets al ingresar a un evento. Una vez que un ticket se utiliza para el check-in, se marca como consumido y no puede volver a usarse.
 
 ### Evento 
 
 ```js
 {
-  "kind": 10600,
+  "kind": 31923,
   "pubkey": "<npub-owner>",
   "content": "<content from event on string>",
   "tags": [
-    // Metadata
-    ["d", "<UUID>"],
-    ["a", "<kind>:<npub-owner>:<UUID>"]
-    ["title", "<title of event>"],
-    ["image", "<image url>", "256x256"],
+      // Metadata
+      ["d", "<UUID>"],
+      ["title", "<title of event>"],
+      ["image", "<image url>", "256x256"],
 
-    // Dates
-    ["start", "<unix timestamp in seconds>"],
-    ["end", "<unix timestamp in seconds>"],
+      // Dates
+      ["start", "<unix timestamp in seconds>"],
+      ["end", "<unix timestamp in seconds>"],
 
-    // Location
-    ["location", `<location description>`],
-    ["g", "<geohash>"],
+      ["start_tzid", "<IANA Time Zone Database identifier>"],
+      ["end_tzid", "<IANA Time Zone Database identifier>"],
 
-    // Publishers
-    ["p", "<npub-owner>", "owner"],
-    ["p", "<npub-mod>", "mod"],
+      // Location
+      ["location", `<location description>`],
+      ["g", "<geohash>"],
 
-    // Tags
-    ["t", "<tag name>"],
-    ["t", "<tag name>"],
+      // Publishers
+      ["p", "<npub-owner>", "<relay recomendado>", "owner"],
+      ["p", "<npub-mod>", "<relay recomendado>", "<role>"],
 
-    // Tickets
-    ["ticket", "<title>", "<description>", "<amount>", "sat/<token>", "<quantity>"],
-    ["ticket", "<title>", "<description>", "<amount>", "sat/<token>", "<quantity>"],
+      // Relays
+      ["relays", "<relay-url>", ...]
 
-    // Relays
-    ["relays", "<relay-url>", ...]
+      // Tags
+      ["t", "<tag>"],
+      ["t", "<tag>"],
+
+      // Tickets
+      ["ticket", "<title>", "<description>", "<amount>", "sat/<token>", "<quantity>"],
+      ["ticket", "<title>", "<description>", "<amount>", "sat/<token>", "<quantity>"],
   ]
 }
 ```
@@ -80,26 +82,31 @@ Eventro utiliza tipos de eventos específicos de Nostr para gestionar la creaci�
 
 ```js
 {
-  "kind": 30601,
+  "kind": 30921,
   "pubkey": "<npub-user>",
   "content": "Tickets purchased.",
   "tags": [
       // Metadata
+      ["d", "<UUID>"],
       ["a", "<kind>:<npub-user>:<d tag value>"]
       ["e", "<32-bytes lowercase hex of the id of principal event>"],
 
       // Payment
       ["bolt11", "<invoice>"],
 
-      // Tickets
-      ["ticket", "<title>", "<quantity>"],
-      ["ticket", "<title>", "<quantity>"],
+      // Publishers
+      ["p", "<npub-owner>", "<relay-url>"],
+      ["p", "<npub-mod>", "<relay-url>"],
 
       // Relays
       ["relays", "<relay-url>", ...]
 
-      // Status
+      // Status 
       ["status", "purchased/transferred"],
+
+      // Tickets
+      ["ticket", "<title>", "<quantity>"],
+      ["ticket", "<title>", "<quantity>"],
   ]
 }
 ```
@@ -108,7 +115,7 @@ Eventro utiliza tipos de eventos específicos de Nostr para gestionar la creaci�
 
 ```js
 {
-  "kind": 30602,
+  "kind": 30922,
   "pubkey": "<npub-mod/owner>",
   "content": "Check-in.",
   "tags": [
@@ -119,12 +126,12 @@ Eventro utiliza tipos de eventos específicos de Nostr para gestionar la creaci�
       // User
       ["p", "<npub-user>"],
 
+      // Relays
+      ["relays", "<relay-url>", ...]
+
       // Ticket
       ["check-in", "<title>", "<quantity>"],
       ["check-in", "<title>", "<quantity>"],
-
-      // Relays
-      ["relays", "<relay-url>", ...]
   ]
 }
 ```
