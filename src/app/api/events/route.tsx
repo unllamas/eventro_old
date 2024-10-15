@@ -21,7 +21,7 @@ export async function GET(request: NextRequest) {
     const eventMap = new Map();
 
     events.forEach((event) => {
-      const id = event?.tags.find((tag: string[]) => tag[0] === 'a')?.[1];
+      const id = event?.tags.find((tag: string[]) => tag[0] === 'd')?.[1];
       const start = event?.tags.find((tag: string[]) => tag[0] === 'start')?.[1];
       const end = event?.tags.find((tag: string[]) => tag[0] === 'end')?.[1];
 

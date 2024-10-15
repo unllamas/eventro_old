@@ -11,7 +11,7 @@ export async function GET(request: NextRequest) {
 
   const filter: NDKFilter = {
     kinds: [31923 as number],
-    '#a': [id],
+    '#d': [id],
     limit: 1,
   };
 
