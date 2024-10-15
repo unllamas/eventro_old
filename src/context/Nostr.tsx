@@ -1,7 +1,6 @@
 'use client';
 
-import Link from 'next/link';
-import { useNostrHooks, useAutoLogin, useActiveUser, useLogin } from 'nostr-hooks';
+import { useNostrHooks, useAutoLogin } from 'nostr-hooks';
 
 import { ndk } from '@/lib/nostr';
 import { Footer } from '@/components/layout/footer';
