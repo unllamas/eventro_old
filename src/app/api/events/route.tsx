@@ -22,13 +22,14 @@ export async function GET(request: NextRequest) {
 
     events.forEach((event) => {
       const id = event?.tags.find((tag: string[]) => tag[0] === 'd')?.[1];
+      const a = event?.tags.find((tag: string[]) => tag[0] === 'a')?.[1];
       const start = event?.tags.find((tag: string[]) => tag[0] === 'start')?.[1];
       const end = event?.tags.find((tag: string[]) => tag[0] === 'end')?.[1];
 
-      if (id && start && end && parseInt(end) >= currentTime) {
-        const existingEvent = eventMap.get(id);
+      if (a && start && end && parseInt(end) >= currentTime) {
+        const existingEvent = eventMap.get(a);
         if (!existingEvent || existingEvent.created_at < event?.created_at!) {
-          eventMap.set(id, {
+          eventMap.set(a, {
             id,
             pubkey: event.pubkey,
             content: event.content,
