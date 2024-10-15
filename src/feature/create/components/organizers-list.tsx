@@ -1,10 +1,10 @@
-import { X, Search } from 'lucide-react';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { useMemo } from 'react';
+import { useActiveUser, useProfile } from 'nostr-hooks';
+import { Search } from 'lucide-react';
+
+import { Avatar } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Organizer } from '@/types/event';
-import { useActiveUser, useProfile } from 'nostr-hooks';
-import { useMemo } from 'react';
 
 interface OrganizersListProps {
   newOrganizer: string;
@@ -28,10 +28,7 @@ export function OrganizersList({
     <div className='flex flex-col gap-2'>
       <h2 className='text-white/70 text-sm font-bold'>Organizers</h2>
       <div className='flex items-center space-x-4'>
-        <Avatar>
-          <AvatarImage src={profile?.image} alt={profile?.name} />
-          <AvatarFallback>{profile?.name}</AvatarFallback>
-        </Avatar>
+        <Avatar src={profile?.image} />
         <div className='flex-1'>
           <p className='font-bold'>{profile?.name}</p>
           <p className='text-white/70'>{activeUser?.pubkey?.slice(0, 8)}...</p>
