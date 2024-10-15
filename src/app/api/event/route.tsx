@@ -21,6 +21,7 @@ export async function GET(request: NextRequest) {
 
     const event = {
       id: raw?.tags.find((tag: any) => tag[0] === 'd')?.[1],
+      pubkey: raw?.pubkey,
       title: raw?.tags.find((tag: any) => tag[0] === 'title')?.[1] || 'Untitled Event',
       date: new Date(raw?.created_at! * 1000).toLocaleDateString(),
       time: new Date(raw?.created_at! * 1000).toLocaleTimeString(),
