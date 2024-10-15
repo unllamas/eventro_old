@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import dynamic from 'next/dynamic';
+import { Analytics } from '@vercel/analytics/react';
 
 import '@/style/globals.css';
 
@@ -26,6 +27,7 @@ export default function RootLayout({
     <html lang='en'>
       <body className={`antialiased`}>
         <NostrContext>{children}</NostrContext>
+        <Analytics mode={'production'} />;
       </body>
     </html>
   );
