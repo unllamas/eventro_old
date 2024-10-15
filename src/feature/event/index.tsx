@@ -14,6 +14,8 @@ import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
+import { OwnerList } from './components/owner-list';
+import { ExpandableImage } from './components/expandable-image';
 
 export function EventFeature(props: { id: string }) {
   const { id } = props;
@@ -80,10 +82,9 @@ export function EventFeature(props: { id: string }) {
     <div className='min-h-screen bg-background'>
       <main className='flex flex-col md:flex-row gap-8 w-full max-w-[960px] mx-auto px-4 py-8'>
         <div className='flex flex-col w-full md:max-w-[320px] gap-8'>
-          <div className='relative overflow-hidden w-full max-h-[320px] aspect-square rounded-xl bg-background border'>
-            <Image className='object-cover' src={event?.image as string} alt={event?.title as string} fill />
-          </div>
+          <ExpandableImage src={event?.image as string} alt={event?.title as string} title={event?.title as string} />
 
+          <OwnerList pubkey={event.pubkey} />
           {/* <Card>
             <CardHeader>
               <CardTitle>Event Details</CardTitle>
