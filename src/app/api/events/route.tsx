@@ -25,18 +25,25 @@ export async function GET(request: NextRequest) {
       const a = event?.tags.find((tag: string[]) => tag[0] === 'a')?.[1];
       const start = event?.tags.find((tag: string[]) => tag[0] === 'start')?.[1];
       const end = event?.tags.find((tag: string[]) => tag[0] === 'end')?.[1];
+      const title = event?.tags.find((tag: any) => tag[0] === 'title')?.[1] || 'Untitled Event';
+      const location = event?.tags.find((tag: any) => tag[0] === 'location')?.[1] || 'TBA';
+      const image = event?.tags.find((tag: any) => tag[0] === 'image')?.[1];
 
       if (a && start && end && parseInt(end) >= currentTime) {
         const existingEvent = eventMap.get(a);
         if (!existingEvent || existingEvent.created_at < event?.created_at!) {
           eventMap.set(a, {
             id,
+            a,
             pubkey: event.pubkey,
             content: event.content,
             created_at: event.created_at,
             tags: event.tags,
             start: parseInt(start),
             end: parseInt(end),
+            title,
+            location,
+            image,
           });
         }
       }

@@ -11,7 +11,7 @@ export async function GET(request: NextRequest) {
 
   const filter: NDKFilter = {
     kinds: [31923 as number],
-    '#d': [id],
+    '#a': [id],
     limit: 1,
   };
 
@@ -21,6 +21,7 @@ export async function GET(request: NextRequest) {
 
     const event = {
       id: raw?.tags.find((tag: any) => tag[0] === 'd')?.[1],
+      a: id,
       pubkey: raw?.pubkey,
       title: raw?.tags.find((tag: any) => tag[0] === 'title')?.[1] || 'Untitled Event',
       date: new Date(raw?.created_at! * 1000).toLocaleDateString(),
