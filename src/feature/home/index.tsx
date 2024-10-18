@@ -50,27 +50,21 @@ export function HomeFeature() {
             events?.map((event: any) => {
               if (!event) return null;
 
-              const id = event?.tags.find((tag: any) => tag[0] === 'd')?.[1];
-              const title = event?.tags.find((tag: any) => tag[0] === 'title')?.[1] || 'Untitled Event';
-              const start = event?.tags.find((tag: any) => tag[0] === 'start')?.[1];
-              const location = event?.tags.find((tag: any) => tag[0] === 'location')?.[1] || 'TBA';
-              const image = event?.tags.find((tag: any) => tag[0] === 'image')?.[1];
-
               return (
-                <Link key={id} href={`/event/${event?.id}`}>
+                <Link key={event?.a} href={`/event/${event?.a}`}>
                   <Card>
                     <CardContent>
                       <div className='flex gap-4 items-center'>
                         <div className='relative overflow-hidden w-full max-w-[80px] max-h-[80px] aspect-square rounded-xl bg-[#333]'>
-                          <Image src={image as string} alt={title} layout='fill' objectFit='cover' />
+                          <Image src={event?.image as string} alt={event?.title} layout='fill' objectFit='cover' />
                         </div>
                         <div>
-                          <h3 className='text-xl font-bold'>{title}</h3>
+                          <h3 className='text-xl font-bold'>{event?.title}</h3>
                           <div className='flex gap-2 text-white/70 text-sm'>
                             <p className=''>
-                              <span className='mr-2'>{new Date(Number(start) * 1000).toLocaleDateString()}</span>
+                              <span className='mr-2'>{new Date(Number(event?.start) * 1000).toLocaleDateString()}</span>
                               <span>
-                                {new Date(Number(start) * 1000).toLocaleTimeString('es-ES', {
+                                {new Date(Number(event?.start) * 1000).toLocaleTimeString('es-ES', {
                                   hour: '2-digit',
                                   minute: '2-digit',
                                 })}
@@ -79,7 +73,7 @@ export function HomeFeature() {
                             </p>
                             <p>·</p>
                             <p className='overflow-hidden whitespace-nowrap w-full max-w-[160px] truncate'>
-                              {location}
+                              {event?.location}
                             </p>
                           </div>
                         </div>
